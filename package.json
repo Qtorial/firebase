@@ -1,0 +1,8 @@
+{
+  "name": "q-torial",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "deploy": "cd functions && yarn install && cd ../ && firebase deploy"
+  }
+}

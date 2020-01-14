@@ -1,0 +1,2 @@
+ga.credentials.client_id=${GA_CREDENTIALS_CLIENT_ID}
+ga.credentials.client_secret=${GA_CREDENTIALS_CLIENT_SECRET}

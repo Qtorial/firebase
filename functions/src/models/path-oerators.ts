@@ -6,12 +6,12 @@ export const PATH_REGEX: string = 'REGEX';
 export default [
   {
     value: PATH_ALL,
-    text: 'All the url path',
+    text: 'All the url paths',
     pathPriority: 0,
   },
   {
     value: PATH_EQUALS,
-    text: 'url paths that equal to',
+    text: 'url paths that are equal to',
     pathPriority: 1,
   },
   {

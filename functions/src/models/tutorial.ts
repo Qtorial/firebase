@@ -38,6 +38,8 @@ export default class Tutorial extends Model {
 
   gaId: string|null = null;
 
+  gaPropertyId: string|null = null;
+
   constructor(init?: Partial<Tutorial>) {
     super();
     Object.assign(this, init);

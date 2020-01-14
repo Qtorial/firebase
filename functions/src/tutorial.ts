@@ -2,7 +2,6 @@ import functions from './functions';
 import PathOperators from './models/path-oerators';
 import { URL } from 'url';
 import Tutorial  from './models/tutorial';
-import Ga from './models/ga';
 import admin from './admin';
 import Step from './models/step';
 
@@ -42,8 +41,18 @@ export const onTutorialDelete = functions.firestore
   .document('/users/{userID}/tutorials/{tutorialID}')
   .onDelete(async (snap, context) => {
     try {
-      const querySnapshot = await snap.ref.collection('steps').get();
-      await Promise.all(querySnapshot.docs.map(doc => doc.ref.delete()));
+      const stepsSnapshot = await snap.ref.collection('steps').get();
+      if (stepsSnapshot.docs.length > 0) {
+        await Promise.all(stepsSnapshot.docs.map(doc => doc.ref.delete()));
+      }
+      const performancesSnapshot = await snap.ref.collection('performances').get();
+      if (performancesSnapshot.docs.length > 0) {
+        await Promise.all(performancesSnapshot.docs.map(doc => doc.ref.delete()));
+      }
+      const errorsSnapshot = await snap.ref.collection('errors').get();
+      if (errorsSnapshot.docs.length > 0) {
+        await Promise.all(errorsSnapshot.docs.map(doc => doc.ref.delete()));
+      }
       return true;
     } catch (error) {
       console.error(error);
@@ -58,14 +67,13 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
     response.set('Access-Control-Allow-Methods', 'POST');
     response.set('Access-Control-Allow-Headers', 'Content-Type');
     response.set('Access-Control-Max-Age', '3600');
-    return response.status(204).send('');
+    return response.sendStatus(204);
   } else if (request.method === 'POST') {
     response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     if (request.body === undefined || request.body.url === undefined || request.body.key === undefined || request.body.once === undefined) {
       return response.status(422).send('Unprocessable Entity');
     }
     let selectedTutorial: Tutorial|null = null;
-    let ga: object|null = null;
     const url = new URL(request.body.url);
     const userKey = request.body.key;
     const once: string[] = request.body.once;
@@ -98,19 +106,9 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
           ...ref.data()
         });
       })
-      if (selectedTutorial.gaId) {
-        const gaRef = await admin.firestore().collection("users").doc(userKey).collection('gas').doc(selectedTutorial.gaId).get();
-        if (gaRef.exists) {
-          ga = new Ga({
-            id: gaRef.id,
-            ...gaRef.data(),
-          });
-        }
-      }
     }
     return response.status(200).send({
       tutorial: selectedTutorial,
-      ga,
     });
   }
   return response.status(405).send('Method Not Allowed');
@@ -122,11 +120,11 @@ export const storePerformance = functions.https.onRequest(async (request, respon
     response.set('Access-Control-Allow-Methods', 'POST');
     response.set('Access-Control-Allow-Headers', 'Content-Type');
     response.set('Access-Control-Max-Age', '3600');
-    return response.status(204).send('');
+    return response.sendStatus(204);
   } else if (request.method === 'POST') {
     const tutorialId: string = request.body.tutorialId;
     const userKey: string = request.body.key;
-    if (!request.body || !tutorialId) {
+    if (!request.body || !tutorialId || !userKey) {
       return response.status(422).send('Unprocessable Entity');
     }
     const ref = admin.firestore().collection("users").doc(userKey).collection('tutorials').doc(tutorialId).collection("performances").doc();
@@ -136,6 +134,31 @@ export const storePerformance = functions.https.onRequest(async (request, respon
       complete: request.body.complete,
       elapsedTime: request.body.elapsedTime,
       euId: request.body.euId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+    return response.sendStatus(200);
+  }
+  return response.status(405).send('Method Not Allowed');
+});
+
+export const logError = functions.https.onRequest(async (request, response) => {
+  response.set('Access-Control-Allow-Origin', '*');
+  if (request.method === 'OPTIONS') {
+    response.set('Access-Control-Allow-Methods', 'POST');
+    response.set('Access-Control-Allow-Headers', 'Content-Type');
+    response.set('Access-Control-Max-Age', '3600');
+    return response.sendStatus(204);
+  } else if (request.method === 'POST') {
+    const tutorialId: string = request.body.tutorialId;
+    const userKey: string = request.body.key;
+    if (!request.body || !userKey || !tutorialId) {
+      return response.status(422).send('Unprocessable Entity');
+    }
+    const ref = admin.firestore().collection("users").doc(userKey).collection('tutorials').doc(tutorialId).collection("errors").doc();
+    await ref.set({
+      message: request.body.message,
+      stepIndex: request.body.stepIndex,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });

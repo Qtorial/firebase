@@ -5,7 +5,8 @@ import {
   onTutorialCreate,
   onTutorialUpdate,
   getTutorial,
-  storePerformance
+  storePerformance,
+  logError,
 } from './tutorial';
 
 admin.initializeApp(functions.config().firebase);
@@ -14,9 +15,6 @@ exports.onTutorialDelete = onTutorialDelete;
 exports.onTutorialCreate = onTutorialCreate;
 exports.onTutorialUpdate = onTutorialUpdate;
 
-exports.addGa = addGa;
-exports.queryAccounts = queryAccounts;
-exports.onGaDelete = onGaDelete;
-
 exports.getTutorial = getTutorial;
+exports.logError = logError;
 exports.storePerformance = storePerformance;
