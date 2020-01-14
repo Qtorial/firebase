@@ -6,39 +6,37 @@ import admin from './admin';
 import Step from './models/step';
 
 export const onTutorialCreate = functions.firestore
-  .document('/users/{userID}/tutorials/{tutorialID}')
+  .document('/users/{userId}/tutorials/{tutorialId}')
   .onCreate(async (snap, context) => {
     const newValue: any = snap.data();
-    const pathPriority = PathOperators.find(p => p.value === newValue.pathOperator)!.pathPriority;
+    const pathOperator = PathOperators.find(p => p.value === newValue.pathOperator);
+    if (!pathOperator) return;
     try {
       await snap.ref.update({
-        pathPriority
+        pathPriority: pathOperator.pathPriority,
       })
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
     }
   });
 
 export const onTutorialUpdate = functions.firestore
-  .document('/users/{userID}/tutorials/{tutorialID}')
+  .document('/users/{userId}/tutorials/{tutorialId}')
   .onUpdate(async (snap, context) => {
     const newValue: any = snap.after.data();
-    const pathPriority = PathOperators.find(p => p.value === newValue.pathOperator)!.pathPriority;
+    const pathOperator = PathOperators.find(p => p.value === newValue.pathOperator);
+    if (!pathOperator) return;
     try {
       await snap.after.ref.update({
-        pathPriority
+        pathPriority: pathOperator.pathPriority,
       });
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
     }
   });
 
 export const onTutorialDelete = functions.firestore
-  .document('/users/{userID}/tutorials/{tutorialID}')
+  .document('/users/{userId}/tutorials/{tutorialId}')
   .onDelete(async (snap, context) => {
     try {
       const stepsSnapshot = await snap.ref.collection('steps').get();
@@ -53,10 +51,8 @@ export const onTutorialDelete = functions.firestore
       if (errorsSnapshot.docs.length > 0) {
         await Promise.all(errorsSnapshot.docs.map(doc => doc.ref.delete()));
       }
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
     }
   });
 
@@ -79,7 +75,6 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
     const once: string[] = request.body.once;
 
     const tutorialRefs: FirebaseFirestore.QuerySnapshot = await admin.firestore().collection("users").doc(userKey).collection('tutorials').where('isActive', '==', true).orderBy('pathPriority', 'asc').get();
-    // tutorialsをループしてpathvalueをチェックする
     const matchedTutorials: Tutorial[] = [];
     tutorialRefs.forEach(ref => {
       const tutorial = new Tutorial({
