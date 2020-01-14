@@ -27,16 +27,15 @@ Run the firebase cli command below and follow the prompt to log in.
 $ firebase login --no-localhost
 ```
 Once you logged in, run the command below at the project root: `/app`.
-
+```
+$ firebase init
+```
 When asked which feature to set up, make sure Firestore, Functions and Storage selected.  
 When asked which firebase project to use, select the firebase project you created before you start this tutorial.  
 When asked whether to overwrite any kind of files we already prepared, **please do not overwrite them**, so that you can deploy everything with no fuss.  
 When asked which language to use for Cloud Functions, answer Typescript.
-When asked whether you want to install dependencies with npm, answer no.
+When asked whether you want to install dependencies with npm, answer no as we use yarn for managing dependencies.
 
-```
-$ firebase init
-```
 The following is an example of running the command above. 
 ```
 /app # firebase init
@@ -116,4 +115,8 @@ i  Writing project information to .firebaserc...
 
 ✔  Firebase initialization complete!
 
+```
+After the initialization, run the command below to deploy everything you need to use Qtorial. 
+```
+$ yarn deploy
 ```
