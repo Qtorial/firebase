@@ -5,6 +5,7 @@
 #### Prerequisite
 Create a firebase project where you enabled
   - firestore
+  - storage
   - functions
     
 Also, we recommend you create a new project as we don't want to mess up your existing project.
