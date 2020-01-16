@@ -8,6 +8,9 @@ import {
   storePerformance,
   logError,
 } from './tutorial';
+import {
+  updateAssets,
+} from './asset';
 
 admin.initializeApp(functions.config().firebase);
 
@@ -18,3 +21,5 @@ exports.onTutorialUpdate = onTutorialUpdate;
 exports.getTutorial = getTutorial;
 exports.logError = logError;
 exports.storePerformance = storePerformance;
+
+exports.updateAssets = updateAssets;
