@@ -49,6 +49,7 @@ export const updateAssets = functions.https.onCall(
           destination,
         });
         await makePublic(destination);
+        resolve(true);
       } catch (e) {
         reject(e);
       }
