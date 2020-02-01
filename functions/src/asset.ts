@@ -34,7 +34,7 @@ export const updateAssets = functions.https.onCall(
     if (!auth) {
       throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
     }
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async resolve => {
       try {
         const filename = '/tmp/q-torial.js';
         await downloadFile('q-torial/js/q-torial.js', filename);
@@ -51,7 +51,8 @@ export const updateAssets = functions.https.onCall(
         await makePublic(destination);
         resolve(true);
       } catch (e) {
-        reject(e);
+        console.error(e);
+        resolve(false);
       }
     });
   },

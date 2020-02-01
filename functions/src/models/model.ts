@@ -11,7 +11,7 @@ export default class Model {
 
   updatedAt: admin.firestore.FieldValue|null = null;
 
-  toPlainObject(excludes: string[] = ['id']) {
+  toPlainObject(excludes: string[] = ['createdAt', 'updatedAt']) {
     const object: IndexableInterface = {};
     const has = Object.prototype.hasOwnProperty;
     const data = <IndexableInterface>this;

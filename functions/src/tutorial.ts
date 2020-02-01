@@ -56,6 +56,23 @@ export const onTutorialDelete = functions.firestore
     }
   });
 
+export const deleteGaId = functions.https.onCall(async (data: any, context: functions.https.CallableContext) => {
+  const { auth } = context;
+  if (!auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
+  }
+  const { id } = data;
+  const tutorialRefs: FirebaseFirestore.QuerySnapshot = await admin.firestore()
+    .collection("users")
+    .doc(auth.uid)
+    .collection('tutorials')
+    .where('gaId', '==', id)
+    .get();
+  await Promise.all(tutorialRefs.docs.map(doc => doc.ref.update({
+    gaId: null,
+  })));
+});
+
 
 export const getTutorial = functions.https.onRequest(async (request, response) => {
   response.set('Access-Control-Allow-Origin', '*');
@@ -77,10 +94,7 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
     const tutorialRefs: FirebaseFirestore.QuerySnapshot = await admin.firestore().collection("users").doc(userKey).collection('tutorials').where('isActive', '==', true).orderBy('pathPriority', 'asc').get();
     const matchedTutorials: Tutorial[] = [];
     tutorialRefs.forEach(ref => {
-      const tutorial = new Tutorial({
-        ...ref.data(),
-        id: ref.id,
-      });
+      const tutorial = new Tutorial(ref.data());
       if (!once.includes(ref.id) && tutorial.couldBeShownOn(url)) {
         if (tutorial.hasSameParameters(url)) {
           if (!tutorial.domain || tutorial.couldBeShownOn(url, true)) {
@@ -96,10 +110,7 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
       const selectedTutorialRef = admin.firestore().collection("users").doc(userKey).collection('tutorials').doc(selectedTutorial.id!)
       const stepRefs = await selectedTutorialRef.collection('steps').orderBy('order', 'asc').get();
       selectedTutorial.steps = stepRefs.docs.map(ref => {
-        return new Step({
-          id: ref.id,
-          ...ref.data()
-        });
+        return new Step(ref.data());
       })
     }
     return response.status(200).send({
