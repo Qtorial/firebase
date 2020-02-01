@@ -8,8 +8,9 @@
 Create a firebase project where you enabled
   - firestore
   - storage
-  - functions
-    
+  - functions (cloud functions for firebase)
+  
+While you need to manually enable firestore and storage in your firebase project, you don't have to do anything for functions.
 Also, we recommend you create a new project as we don't want to mess up your existing project.
 
 ---
