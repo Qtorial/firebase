@@ -2,10 +2,7 @@
   <img src="https://user-images.githubusercontent.com/58778841/73591971-6bf62500-4538-11ea-95fe-c2f17613d0d5.png" width="320px">
 </div>
 
-
-# firebase for Qtorial
-
-## How to set up your firebase project for Qtorial.
+## Set up your firebase project for Qtorial.
 
 #### Prerequisite
 Create a firebase project where you enabled
