@@ -56,24 +56,6 @@ export const onTutorialDelete = functions.firestore
     }
   });
 
-export const deleteGaId = functions.https.onCall(async (data: any, context: functions.https.CallableContext) => {
-  const { auth } = context;
-  if (!auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
-  }
-  const { id } = data;
-  const tutorialRefs: FirebaseFirestore.QuerySnapshot = await admin.firestore()
-    .collection("users")
-    .doc(auth.uid)
-    .collection('tutorials')
-    .where('gaId', '==', id)
-    .get();
-  await Promise.all(tutorialRefs.docs.map(doc => doc.ref.update({
-    gaId: null,
-  })));
-});
-
-
 export const getTutorial = functions.https.onRequest(async (request, response) => {
   response.set('Access-Control-Allow-Origin', '*');
   if (request.method === 'OPTIONS') {

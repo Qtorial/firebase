@@ -68,4 +68,12 @@ export default class Tutorial extends Model {
     }
     return valid;
   }
+
+  toPlainObject() {
+    return super.toPlainObject([
+      'createdAt',
+      'updatedAt',
+      'steps'
+    ]);
+  }
 }
