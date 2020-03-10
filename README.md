@@ -19,7 +19,7 @@ Clone this repository
 ```
 $ git clone https://github.com/Qtorial/firebase.git
 ```
-Go to the root of project
+Go to the root of the repository
 ```
 $ cd firebase
 ```
