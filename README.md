@@ -10,7 +10,7 @@ a firebase project where you enabled
   - storage
   - functions (cloud functions for firebase)
   
-As for firestore, storage you need to manually enable firestore and storage in your firebase project.
+As for firestore and storage, you need to manually enable firestore and storage in your firebase project.
 We recommend you create a new project as we don't want to mess up your existing project. 
 If you like to use an exiting project, you need to manually merge our codes and yours and deploy them.
 
