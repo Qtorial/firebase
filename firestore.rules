@@ -4,9 +4,6 @@ service cloud.firestore {
     function authData() {
       return request.auth;
     }
-    function existingData() {
-      return resource.data;
-    }
     function incomingData() {
       return request.resource.data;
     }
