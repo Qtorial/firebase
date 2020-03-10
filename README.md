@@ -5,13 +5,14 @@
 ## Set up your firebase project for Qtorial.
 
 #### Prerequisite
-Create a firebase project where you enabled
+a firebase project where you enabled
   - firestore
   - storage
   - functions (cloud functions for firebase)
   
-While you need to manually enable firestore and storage in your firebase project, you don't have to do anything for functions.
-Also, we recommend you create a new project as we don't want to mess up your existing project.
+As for firestore, storage you need to manually enable firestore and storage in your firebase project.
+We recommend you create a new project as we don't want to mess up your existing project. 
+If you like to use an exiting project, you need to manually merge our codes and yours and deploy them.
 
 ---
 Clone this repository
