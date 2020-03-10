@@ -19,6 +19,10 @@ Clone this repository
 ```
 $ git clone https://github.com/Qtorial/firebase.git
 ```
+Go to the root of project
+```
+$ cd firebase
+```
 Create and start a container
 ```
 $ docker-compose up -d
