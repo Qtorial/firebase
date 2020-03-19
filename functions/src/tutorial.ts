@@ -121,7 +121,7 @@ export const storePerformance = functions.https.onRequest(async (request, respon
       allSteps: request.body.allSteps,
       complete: request.body.complete,
       elapsedTime: request.body.elapsedTime,
-      euId: request.body.euId,
+      customerId: request.body.customerId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
