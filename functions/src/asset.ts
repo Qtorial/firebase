@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as replace from 'replace-in-file';
 import { makeRequest } from './request';
 import functions from './functions';
 import { putFile, makePublic } from './storage';
@@ -38,6 +39,12 @@ export const updateAssets = functions.https.onCall(
       try {
         const filename = '/tmp/q-torial.js';
         await downloadFile('q-torial/js/q-torial.js', filename);
+        const options = {
+          files: filename,
+          from: /{{FIREBAE_PROJECT_ID}}/g,
+          to: process.env.GCLOUD_PROJECT,
+        };
+        const results = await replace(options)
         const destination = 'js/q-torial.js';
         await putFile(filename, {
           // Support for HTTP requests made with `Accept-Encoding: gzip`
