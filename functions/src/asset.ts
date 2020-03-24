@@ -31,13 +31,13 @@ const downloadFile = async (path: string, dist: string): Promise<boolean> => new
 );
 
 export const updateAssets = functions.https.onCall(
-  (data: any, context: functions.https.CallableContext) => {
+  (data: any, context: functions.https.CallableContext): Promise<boolean> => {
     const { auth } = context;
     if (!auth) {
       throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
     }
     if (!gcpProjectId) {
-      return;
+      throw new Error('gcp project id is not found.');
     }
     return new Promise(async resolve => {
       try {
