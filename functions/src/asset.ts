@@ -1,11 +1,12 @@
 import * as fs from 'fs';
-import * as replace from 'replace-in-file';
+import replaceInFile, { ReplaceInFileConfig } from 'replace-in-file';
 import { makeRequest } from './request';
 import functions from './functions';
 import { putFile, makePublic } from './storage';
 
 const PROTOCOL = 'https:';
 const HOST_NAME = 'storage.googleapis.com';
+const gcpProjectId: string|undefined = process.env.GCLOUD_PROJECT;
 
 const downloadFile = async (path: string, dist: string): Promise<boolean> => new Promise(
   async (resolve, reject) => {
@@ -35,16 +36,19 @@ export const updateAssets = functions.https.onCall(
     if (!auth) {
       throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
     }
+    if (!gcpProjectId) {
+      return;
+    }
     return new Promise(async resolve => {
       try {
         const filename = '/tmp/q-torial.js';
         await downloadFile('q-torial/js/q-torial.js', filename);
-        const options = {
+        const options: ReplaceInFileConfig = {
           files: filename,
-          from: /{{FIREBAE_PROJECT_ID}}/g,
-          to: process.env.GCLOUD_PROJECT,
+          from: /\{\{FIREBAE_PROJECT_ID\}\}/g,
+          to: gcpProjectId,
         };
-        const results = await replace(options)
+        await replaceInFile(options)
         const destination = 'js/q-torial.js';
         await putFile(filename, {
           // Support for HTTP requests made with `Accept-Encoding: gzip`
