@@ -64,7 +64,6 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
     response.set('Access-Control-Max-Age', '3600');
     return response.sendStatus(204);
   } else if (request.method === 'POST') {
-    response.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     if (request.body === undefined || request.body.url === undefined || request.body.key === undefined || request.body.once === undefined) {
       return response.status(422).send('Unprocessable Entity');
     }
@@ -72,7 +71,6 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
     const url = new URL(request.body.url);
     const userKey = request.body.key;
     const once: string[] = request.body.once;
-
     const tutorialRefs: FirebaseFirestore.QuerySnapshot = await admin.firestore().collection("users").doc(userKey).collection('tutorials').where('isActive', '==', true).orderBy('pathPriority', 'asc').get();
     const matchedTutorials: Tutorial[] = [];
     tutorialRefs.forEach(ref => {
