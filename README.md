@@ -43,7 +43,6 @@ When asked which feature to set up, make sure Firestore, Functions and Storage s
 When asked which firebase project to use, select the firebase project you created before you start this tutorial.  
 When asked whether to overwrite any kind of files we already prepared, **please do not overwrite them**, so that you can deploy everything with no fuss.  
 When asked which language to use for Cloud Functions, answer Typescript.  
-When asked whether you want to install dependencies with npm, answer no as we use yarn for managing dependencies.
 
 The following is an example of running the command above. 
 ```
@@ -127,5 +126,5 @@ i  Writing project information to .firebaserc...
 ```
 After the initialization, run the command below to deploy everything you need to use Qtorial. 
 ```
-$ yarn deploy
+$ npm deploy
 ```

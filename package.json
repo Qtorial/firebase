@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "deploy": "cd functions && yarn install && cd ../ && firebase deploy"
+    "deploy": "cd functions && npm install && cd ../ && firebase deploy"
   }
 }

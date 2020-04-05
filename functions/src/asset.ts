@@ -6,7 +6,7 @@ import { putFile, makePublic } from './storage';
 
 const PROTOCOL = 'https:';
 const HOST_NAME = 'storage.googleapis.com';
-const gcpProjectId: string|undefined = process.env.GCLOUD_PROJECT;
+const gcpProjectId = process.env.GCLOUD_PROJECT;
 
 const downloadFile = async (path: string, dist: string): Promise<boolean> => new Promise(
   async (resolve, reject) => {
