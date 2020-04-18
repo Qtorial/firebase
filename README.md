@@ -39,7 +39,7 @@ Once you logged in, run the command below at the project root: `/app`.
 ```
 $ firebase init
 ```
-When asked which feature to set up, make sure Firestore, Functions and Storage selected.  
+When asked which features to set up, make sure Firestore, Functions and Storage selected.  
 When asked which firebase project to use, select the firebase project you created before you start this tutorial.  
 When asked whether to overwrite any kind of files we already prepared, **please do not overwrite them**, so that you can deploy everything with no fuss.  
 When asked which language to use for Cloud Functions, answer Typescript.  
@@ -63,17 +63,19 @@ Before we get started, keep in mind:
   * You are currently outside your home directory
   * You are initializing in an existing Firebase project directory
 
-? Which Firebase CLI features do you want to set up for this folder? Press Space to select features, then Enter to confirm your choices. Firestore: Deploy rules and create indexes for Firesto
-re, Functions: Configure and deploy Cloud Functions, Storage: Deploy Cloud Storage security rules
+? Which Firebase CLI features do you want to set up for this folder? Press Space to select features, then Enter t
+o confirm your choices. Firestore: Deploy rules and create indexes for Firestore, Functions: Configure and deploy
+ Cloud Functions, Storage: Deploy Cloud Storage security rules
 
 === Project Setup
 
 First, let's associate this project directory with a Firebase project.
-You can create multiple project aliases by running firebase use --add, 
+You can create multiple project aliases by running firebase use --add,
 but for now we'll just set up a default project.
 
 ? Please select an option: Use an existing project
-i  Using project test-f4e4e (test)
+? Select a default Firebase project for this directory: client-001-31558 (client-001)
+i  Using project client-001-31558 (client-001)
 
 === Firestore Setup
 
@@ -82,7 +84,8 @@ requests. You can keep these rules in your project directory
 and publish them with firebase deploy.
 
 ? What file should be used for Firestore Rules? firestore.rules
-? File firestore.rules already exists. Do you want to overwrite it with the Firestore Rules from the Firebase Console? No
+? File firestore.rules already exists. Do you want to overwrite it with the Firestore Rules from the Firebase Con
+sole? No
 
 Firestore indexes allow you to perform complex queries while
 maintaining performance that scales with the size of the result
@@ -90,7 +93,8 @@ set. You can keep index definitions in your project directory
 and publish them with firebase deploy.
 
 ? What file should be used for Firestore indexes? firestore.indexes.json
-? File firestore.indexes.json already exists. Do you want to overwrite it with the Firestore Indexes from the Firebase Console? No
+? File firestore.indexes.json already exists. Do you want to overwrite it with the Firestore Indexes from the Fir
+ebase Console? No
 
 === Functions Setup
 
@@ -107,8 +111,17 @@ i  Skipping write of functions/tslint.json
 i  Skipping write of functions/tsconfig.json
 ? File functions/src/index.ts already exists. Overwrite? No
 i  Skipping write of functions/src/index.ts
-✔  Wrote functions/.gitignore
-? Do you want to install dependencies with npm now? No
+? File functions/.gitignore already exists. Overwrite? No
+i  Skipping write of functions/.gitignore
+? Do you want to install dependencies with npm now? Yes
+
+> protobufjs@6.8.9 postinstall /app/functions/node_modules/protobufjs
+> node scripts/postinstall
+
+npm notice created a lockfile as package-lock.json. You should commit this file.
+added 339 packages from 219 contributors and audited 1224 packages in 38.668s
+found 0 vulnerabilities
+
 
 === Storage Setup
 
@@ -122,9 +135,8 @@ i  Writing configuration info to firebase.json...
 i  Writing project information to .firebaserc...
 
 ✔  Firebase initialization complete!
-
 ```
 After the initialization, run the command below to deploy everything you need to use Qtorial. 
 ```
-$ npm deploy
+$ npm run deploy
 ```
