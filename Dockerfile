@@ -4,6 +4,6 @@ RUN apk update && \
     apk upgrade && \
     apk add --no-cache
 
-RUN yarn global add firebase-tools
+RUN npm install -g firebase-tools
 
 WORKDIR /app
