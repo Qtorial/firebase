@@ -75,7 +75,11 @@ export const getTutorial = functions.https.onRequest(async (request, response) =
     const matchedTutorials: Tutorial[] = [];
     tutorialRefs.forEach(ref => {
       const tutorial = new Tutorial(ref.data());
-      if (!once.includes(ref.id) && tutorial.couldBeShownOn(url)) {
+      let okToShow = true;
+      if (tutorial.settings.once) {
+        okToShow = !once.includes(ref.id);
+      }
+      if (okToShow && tutorial.couldBeShownOn(url)) {
         if (tutorial.hasSameParameters(url)) {
           if (!tutorial.domain || tutorial.couldBeShownOn(url, true)) {
             matchedTutorials.push(tutorial);
