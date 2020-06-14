@@ -3,17 +3,23 @@
 </div>
 
 ## Set up your firebase project for Qtorial.
-
+ 
+This is a repository that let you deploy everyting you need to start using Qtorial.
+ 
 #### Prerequisite
-a firebase project where you enabled
+- Node.js environment
+- Firebase CLI
+- a firebase project where you enabled
   - firestore
   - storage
   - functions (cloud functions for firebase)
   
 As for firestore and storage, you need to manually enable firestore and storage in your firebase project.
 We recommend you create a new project as we don't want to mess up your existing project. 
-If you like to use an exiting project, you need to manually merge our codes and yours and deploy them.
-
+If you like to use an exiting project, you need to manually merge our codes and yours and deploy them. 
+ 
+Note that if you have docker installed, you could use our docker image in this repository. We use the image in the following example.
+ 
 ---
 Clone this repository
 ```
